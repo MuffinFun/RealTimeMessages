@@ -1,10 +1,12 @@
 import './App.css'
+import LongPulling from './longPulling/longPulling'
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
+      <LongPulling/>
     </>
   )
 }
