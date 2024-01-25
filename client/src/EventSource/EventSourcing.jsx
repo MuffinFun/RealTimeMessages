@@ -1,7 +1,9 @@
 import '../App.css'
 import {useEffect, useState } from 'react'
 import axios from 'axios'
-const LongPulling = () =>{
+
+
+const EventSourcing = () =>{
 
     // eslint-disable-next-line no-unused-vars
     const [messages, setMessages] = useState([]);
@@ -17,14 +19,11 @@ const LongPulling = () =>{
     }
 
     const subscribe = async () =>{
-        try {
-            const {data} = await axios.get('http://localhost:5000/get-messages')
-            setMessages(prev => [data, ...prev])
-            await subscribe()
-        } catch (error) {
-            setTimeout(()=>{
-                subscribe()
-            }, 500)
+        const eventSource = new EventSource('http://localhost:5000/connect');
+        eventSource.onmessage = (event) =>{
+            const message = JSON.parse(event.data);
+            console.log(event.data)
+            setMessages(prev => [message, ...prev]);
         }
     }
     
@@ -54,4 +53,4 @@ const LongPulling = () =>{
     )
 }
 
-export default LongPulling;
+export default EventSourcing;
